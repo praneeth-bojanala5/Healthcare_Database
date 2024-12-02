@@ -1,19 +1,16 @@
 import streamlit as st
 import psycopg2
-import os
 import pandas as pd
-from dotenv import load_dotenv
 
-# Load environment variables from .env file
-load_dotenv()
 # Function to connect to the PostgreSQL database
 def get_connection():
+    db_secrets = st.secrets["database"]  # Access secrets from Streamlit Cloud
     return psycopg2.connect(
-        dbname = os.getenv('DB_NAME'),
-        user = os.getenv('DB_USERNAME'),
-        password = os.getenv('DB_PASSWORD'),
-        host = os.getenv('DB_HOST'),
-        port = os.getenv('DB_PORT')
+        dbname=db_secrets["DB_NAME"],
+        user=db_secrets["DB_USERNAME"],
+        password=db_secrets["DB_PASSWORD"],
+        host=db_secrets["DB_HOST"],
+        port=db_secrets["DB_PORT"]
     )
 
 # Function to execute SQL queries
