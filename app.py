@@ -231,15 +231,42 @@ def insert_page():
         try:
             col_list = columns.split(",")
             val_list = values.split(",")
+            
+            # Create the query dynamically
             query = sql.SQL("INSERT INTO {} ({}) VALUES ({})").format(
                 sql.Identifier(table_name),
                 sql.SQL(", ").join(map(sql.Identifier, col_list)),
                 sql.SQL(", ").join(sql.Placeholder() * len(val_list))
             )
-            result = execute_query(query.as_string(conn=None), val_list)
+            
+            # Execute the query
+            result = execute_query(query.as_string(), val_list)
             st.success(result)
         except Exception as e:
             st.error(str(e))
+
+# def insert_page():
+#     st.title("Insert Records")
+#     table_name = st.selectbox(
+#         "Select Table",
+#         ["patient", "doctor", "hospital", "insurance", "treatment", "visits"]
+#     )
+#     st.write(f"Insert data into {table_name}")
+#     columns = st.text_input("Enter column names (comma-separated):")
+#     values = st.text_input("Enter values (comma-separated):")
+#     if st.button("Insert Record"):
+#         try:
+#             col_list = columns.split(",")
+#             val_list = values.split(",")
+#             query = sql.SQL("INSERT INTO {} ({}) VALUES ({})").format(
+#                 sql.Identifier(table_name),
+#                 sql.SQL(", ").join(map(sql.Identifier, col_list)),
+#                 sql.SQL(", ").join(sql.Placeholder() * len(val_list))
+#             )
+#             result = execute_query(query.as_string(conn=None), val_list)
+#             st.success(result)
+#         except Exception as e:
+#             st.error(str(e))
 
 # Delete record
 def delete_page():
